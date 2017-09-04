@@ -2,7 +2,7 @@ const server = require('socket.io')();
 // ** We probably wanna use this data file.  Be mindful of multi-access!
 // ** Might need to get locks involved.
 const firstTodos = require('./data.json');
-const Todo = require('./todo');
+const Todo = require('./todo.js');
 
 server.on('connection', (client) => {
     // This is going to be our fake 'database' for this application
@@ -12,7 +12,7 @@ server.on('connection', (client) => {
     // connections from the last time the server was run...
     const DB = firstTodos.map((t) => {
         // Form new Todo objects
-        return new Todo(title=t.title);
+        return new Todo(t.title);
     });
 
     // Sends a message to the client to reload all todos
