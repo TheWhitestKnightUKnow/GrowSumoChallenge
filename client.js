@@ -1,4 +1,4 @@
-const server = io('http://localhost:3003/');
+const server = io('http://localhost:3003');
 const list = document.getElementById('todo-list');
 
 // NOTE: These are all our globally scoped functions for interacting with the server
@@ -20,6 +20,10 @@ function add() {
 
 // TODO: Create a delete function to remove things from
 // the 'database'
+function delete(todo) {
+    list.removeChild(todo);
+    server.emit('delete', todo);
+}
 
 // TODO: Create a complete function that denotes tasks as
 // completed

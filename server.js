@@ -10,7 +10,8 @@ server.on('connection', (client) => {
 
     // FIXME: DB is reloading on client refresh. It should be persistent on new client
     // connections from the last time the server was run...
-    const DB = firstTodos.map((t) => {
+    // (Switched from const to var, so we can filter out todos.)
+    var DB = firstTodos.map((t) => {
         // Form new Todo objects
         return new Todo(t.title);
     });
@@ -18,7 +19,7 @@ server.on('connection', (client) => {
     // Sends a message to the client to reload all todos
     const reloadTodos = () => {
         server.emit('load', DB);
-    }
+    };
 
     // Accepts when a client makes a new todo
     client.on('make', (t) => {
@@ -34,8 +35,32 @@ server.on('connection', (client) => {
         reloadTodos();
     });
     
-    // TODO: Most likely need a 'client.on("delete")'
-    // TODO: Same goes for a 'client.on("complete")'
+    // TODO: This is a mock-up of what I imagine the delete
+    // function will be like
+    client.on('delete', (t) => {
+        // Given the todo, delete it from the list
+        // FIXME: This will delete any Todo with the same
+        // title contents.  This should only delete the selected
+        // Todo.
+        DB = DB.filter((element) => {
+            return element.title != t.title
+        });
+
+        // Send the latest todos to the client
+        // Same FIXME as above!
+        reloadTodos();
+    });
+    
+    // TODO: Same goes for a 
+    client.on("complete", (t) => {
+        // Given the todo, set it's 'complete' value to true
+        DB = DB.map((element) => {
+            if (element == t) {
+                element.completed = true;
+            }
+            return element;
+        });
+    });
 
     // Send the DB downstream on connect
     reloadTodos();
