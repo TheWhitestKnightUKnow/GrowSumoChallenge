@@ -1,4 +1,6 @@
 const server = require('socket.io')();
+// ** We probably wanna use this.  Be mindful of multi-access!
+// ** Might need to get locks involved.
 const firstTodos = require('./data');
 const Todo = require('./todo');
 
@@ -28,8 +30,12 @@ server.on('connection', (client) => {
 
         // Send the latest todos to the client
         // FIXME: This sends all todos every time, could this be more efficient?
+        // ** Sure, could send only the newly made todo(s)
         reloadTodos();
     });
+    
+    // TODO: Most likely need a 'client.on("delete")'
+    // TODO: Same goes for a 'client.on("complete")'
 
     // Send the DB downstream on connect
     reloadTodos();

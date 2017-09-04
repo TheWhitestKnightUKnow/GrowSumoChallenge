@@ -9,13 +9,19 @@ function add() {
 
     // Emit the new todo as some data to the server
     server.emit('make', {
-        titlé : input.value
+        title : input.value
     });
 
     // Clear the input
     input.value = '';
     // TODO: refocus the element
 }
+
+// TODO: Create a delete function to remove things from
+// the 'database'
+
+// TODO: Create a complete function that denotes tasks as
+// completed
 
 function render(todo) {
     console.log(todo);
@@ -27,6 +33,7 @@ function render(todo) {
 
 // NOTE: These are listeners for events from the server
 // This event is for (re)loading the entire list of todos from the server
+// ** This could use data, maybe?
 server.on('load', (todos) => {
     todos.forEach((todo) => render(todo));
 });
