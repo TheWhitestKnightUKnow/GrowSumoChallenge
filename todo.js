@@ -1,5 +1,8 @@
 module.export = class Todo {
     constructor(title='') {
-        this.title = title
+        // The title (and content) of the todo
+        this.title = title;
+        // Whether this todo has been completed or not
+        this.completed = false;
     }
 }

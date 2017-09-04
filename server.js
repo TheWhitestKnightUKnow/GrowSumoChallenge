@@ -1,7 +1,7 @@
 const server = require('socket.io')();
-// ** We probably wanna use this.  Be mindful of multi-access!
+// ** We probably wanna use this data file.  Be mindful of multi-access!
 // ** Might need to get locks involved.
-const firstTodos = require('./data');
+const firstTodos = require('./data.json');
 const Todo = require('./todo');
 
 server.on('connection', (client) => {

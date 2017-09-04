@@ -14,7 +14,8 @@ function add() {
 
     // Clear the input
     input.value = '';
-    // TODO: refocus the element
+    // Refocus on the input
+    input.focus();
 }
 
 // TODO: Create a delete function to remove things from
