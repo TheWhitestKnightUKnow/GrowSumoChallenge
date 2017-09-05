@@ -20,13 +20,16 @@ function add() {
 
 // TODO: Create a delete function to remove things from
 // the 'database'
-function delete(todo) {
+function remove(todo) {
     list.removeChild(todo);
-    server.emit('delete', todo);
+    server.emit('delete', todo); // todo.value?
 }
 
 // TODO: Create a complete function that denotes tasks as
 // completed
+function update(todo) {
+    
+}
 
 function render(todo) {
     console.log(todo);

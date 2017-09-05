@@ -5,12 +5,4 @@ module.exports = class Todo {
         // Whether this todo has been completed or not
         this.completed = false;
     }
-    
-    complete() {
-        this.completed = true;
-    }
-    
-    uncomplete() {
-        this.completed = false;
-    }
 };
