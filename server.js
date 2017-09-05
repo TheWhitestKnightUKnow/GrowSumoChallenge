@@ -1,7 +1,27 @@
-const server = require('socket.io')();
-// ** We probably wanna use this data file.  Be mindful of multi-access!
-// ** Might need to get locks involved.
+// Setting up express to work with socket.io
+var express = require('express');
+var app = express();
+var path = require('path');
+// These are our routes, connecting GET requests
+// to the appropriate files.
+app.get('/', function(req, res) {
+    res.sendFile(path.join(__dirname + '/index.html'));
+});
+app.get('/client.js', function(req, res) {
+    res.sendFile(path.join(__dirname + '/client.js'));
+});
+app.get('/style/style.css', function(req, res) {
+    res.sendFile(path.join(__dirname + '/style/style.css'));
+});
+
+// Setting up port 3003 to be listened to,
+// and hooking socket.io up to it
+var io = app.listen(3003);
+var server = require('socket.io').listen(io);
+
+// Setup data
 const firstTodos = require('./data');
+// Todo class
 const Todo = require('./todo');
 
 server.on('connection', (client) => {
@@ -79,6 +99,3 @@ server.on('connection', (client) => {
     // Send the DB downstream on connect
     reloadTodos();
 });
-
-console.log('Waiting for clients to connect');
-server.listen(3003);

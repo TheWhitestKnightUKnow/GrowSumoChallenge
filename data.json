@@ -1,14 +1,11 @@
 [
     {
-        "title"     : "Order more coffee",
-        "completed" : "false"
+        "title" : "Order more coffee"
     },
     {
-        "title"     : "Clean the coffee machine",
-        "completed" : "false"
+        "title" : "Clean the coffee machine"
     },
     {
-        "title"     : "Sweep the floor",
-        "completed" : "false"
+        "title" : "Sweep the floor"
     }
 ]

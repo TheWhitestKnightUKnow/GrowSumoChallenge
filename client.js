@@ -4,14 +4,13 @@ const list = document.getElementById('todo-list');
 // NOTE: These are all our globally scoped functions for interacting with the server
 // This function adds a new todo from the input
 function add() {
-    console.warn(event);
     const input = document.getElementById('todo-input');
 
     // Emit the new todo as some data to the server
     server.emit('make', {
         title : input.value
     });
-
+    console.warn(input.value);
     // Clear the input
     input.value = '';
     // Refocus on the input
