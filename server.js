@@ -1,20 +1,32 @@
 const server = require('socket.io')();
 // ** We probably wanna use this data file.  Be mindful of multi-access!
 // ** Might need to get locks involved.
-const firstTodos = require('./data.json');
-const Todo = require('./todo.js');
+const firstTodos = require('./data');
+const Todo = require('./todo');
 
 server.on('connection', (client) => {
     // This is going to be our fake 'database' for this application
     // Parse all default Todo's from db
 
-    // FIXME: DB is reloading on client refresh. It should be persistent on new client
-    // connections from the last time the server was run...
-    // (Switched from const to var, so we can filter out todos.)
-    var DB = firstTodos.map((t) => {
-        // Form new Todo objects
-        return new Todo(t.title);
-    });
+    // Found this cool idea online to use a flag
+    // to tell if the server has been reset or not
+    let serverStarted = false;
+    
+    // First, we start the DB off empty
+    let DB = [];
+    
+    // Then, if the server was restarted, we populate the
+    // DB with firstTodos array
+    if (!serverStarted) {
+        DB = firstTodos.map((t) => {
+            // Form new Todo objects
+            return new Todo(t.title);
+        });
+    }
+    
+    // And now, we know the server is running, so we set
+    // our flag to true!
+    serverStarted = true;
 
     // Sends a message to the client to reload all todos
     const reloadTodos = () => {
@@ -42,9 +54,11 @@ server.on('connection', (client) => {
         // FIXME: This will delete any Todo with the same
         // title contents.  This should only delete the selected
         // Todo.
-        DB = DB.filter((element) => {
-            return element.title != t.title
+        const newDB = DB.filter((element) => {
+            return element.title !== t.title;
         });
+        
+        DB = newDB;
 
         // Send the latest todos to the client
         // Same FIXME as above!
