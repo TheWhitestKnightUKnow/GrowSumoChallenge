@@ -50,6 +50,7 @@ server.on('connection', (client) => {
 
     // Sends a message to the client to reload all todos
     const reloadTodos = () => {
+        console.log(DB);
         server.emit('load', DB);
     };
 
@@ -74,26 +75,29 @@ server.on('connection', (client) => {
         // FIXME: This will delete any Todo with the same
         // title contents.  This should only delete the selected
         // Todo.
-        const newDB = DB.filter((element) => {
-            return element.title !== t.title;
+        const newDB = DB.filter((item) => {
+            return item.id !== t.id;
         });
         
         DB = newDB;
-
         // Send the latest todos to the client
         // Same FIXME as above!
         reloadTodos();
     });
     
-    // TODO: Same goes for a 
-    client.on("update", (t) => {
+    // TODO: Same goes for a complete
+    client.on("complete", (t) => {
         // Given the todo, set it's 'complete' value to true
-        DB = DB.map((element) => {
-            if (element == t) {
-                element.completed = true;
+        const newDB = DB.map( (item) => {
+            if (item.id === t.id) {
+                item.completed = true;
             }
-            return element;
+            return item;
         });
+        
+        DB = newDB;
+        
+//        console.log(DB);
     });
 
     // Send the DB downstream on connect

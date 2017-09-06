@@ -1,20 +1,33 @@
 const server = io('http://localhost:3003');
 const list = document.getElementById('todo-list');
 
+// Add a listener to the todo-list, so that when
+// a todo is clicked on, it becomes completed
+list.addEventListener('click', function(ev) {
+  if (ev.target.tagName === 'LI') {
+    ev.target.classList.toggle('checked');
+    list.removeChild(ev.target);
+    console.log(ev);
+    server.emit('delete', ev.target);
+  }
+}, false);
+
 // NOTE: These are all our globally scoped functions for interacting with the server
 // This function adds a new todo from the input
 function add() {
     const input = document.getElementById('todo-input');
-
-    // Emit the new todo as some data to the server
-    server.emit('make', {
-        title : input.value
-    });
-    console.warn(input.value);
-    // Clear the input
-    input.value = '';
-    // Refocus on the input
-    input.focus();
+    // Only make a new entry if input isn't blank
+    if (input.value !== "") {
+        // Emit the new todo as some data to the server
+        server.emit('make', {
+            title : input.value
+        });
+        console.warn(input.value);
+        // Clear the input
+        input.value = '';
+        // Refocus on the input
+        input.focus();
+    }
 }
 
 // TODO: Create a delete function to remove things from
@@ -32,17 +45,13 @@ function update(e) {
 }
 
 function render(todo) {
-    console.log(todo);
+    //console.log(todo);
     // Create the parent list item
     const listItem = document.createElement('li');
-    // Create the 'completed' checkbox
-    const checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.setAttribute('onclick', 'update(event)');
+    listItem.id = todo.id;
     // Set the contents of the list item
     const listItemText = document.createTextNode(todo.title);
-    // Attach the checkbox and the title to the list item
-    listItem.appendChild(checkbox);
+    // Attach the title to the list item
     listItem.appendChild(listItemText);
     // Attach the item to the list
     list.append(listItem);
