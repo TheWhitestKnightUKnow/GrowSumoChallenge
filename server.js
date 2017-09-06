@@ -60,7 +60,7 @@ server.on('connection', (client) => {
 
         // Push this newly created todo to our database
         DB.push(newTodo);
-
+        console.warn(DB);
         // Send the latest todos to the client
         // FIXME: This sends all todos every time, could this be more efficient?
         // ** Sure, could send only the newly made todo(s)
@@ -86,7 +86,7 @@ server.on('connection', (client) => {
     });
     
     // TODO: Same goes for a 
-    client.on("complete", (t) => {
+    client.on("update", (t) => {
         // Given the todo, set it's 'complete' value to true
         DB = DB.map((element) => {
             if (element == t) {
