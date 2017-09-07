@@ -81,9 +81,6 @@ server.on('connection', (client) => {
         });
         
         DB = newDB;
-        // Send the latest todos to the client
-        // Same FIXME as above!
-        reloadTodos();
     });
     
     // TODO: Same goes for a complete

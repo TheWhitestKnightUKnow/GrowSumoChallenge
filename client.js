@@ -18,11 +18,14 @@ function add() {
     }
 }
 
-// TODO: Create a delete function to remove things from
+// A delete function to remove todos from
 // the 'database'
 function remove(todo) {
     list.removeChild(todo);
-    server.emit('delete', todo); // todo.value?
+    server.emit('delete', {
+        id: todo.id,
+        title: todo.innerHTML
+    });
 }
 
 // Updates a todo to "completed"
@@ -46,10 +49,18 @@ function render(todo) {
     // Create the parent list item
     const listItem = document.createElement('li');
     listItem.id = todo.id;
+    // Create an X for deleting todos
+    var span = document.createElement("SPAN");
+    var txt = document.createTextNode("   x");
+    span.className = "close";
+    span.appendChild(txt);
+    span.onclick = function() { remove(listItem); };
     // Set the contents of the list item
     const listItemText = document.createTextNode(todo.title);
     // Attach the title to the list item
     listItem.appendChild(listItemText);
+    // Attach the X to the list item
+    listItem.appendChild(span);
     // Attach the item to the list
     list.append(listItem);
 }
