@@ -32,15 +32,28 @@ function remove(todo) {
 function update(todo) {
     server.emit('update', {
         id: todo.id,
-        title: todo.innerHTML
+        title: todo.innerText
     });
+}
+
+function completeAll() {
+    var lis = list.getElementsByTagName("li");
+    for (var i = 0; i < lis.length; ++i) {
+        // This is a super ugly version of
+        // if (!lis[i].hasClass('completed')) {
+        // because we lack jQuery
+        if ((" " + lis[i].className + " ").replace(/[\n\t\r]/g, " ").indexOf('completed') < 0) {
+            lis[i].classList.toggle('completed');
+        }
+    }
+    server.emit('completeAll');
 }
 
 // Add a listener to the todo-list, so that when
 // a todo is clicked on, it becomes completed
 list.addEventListener('click', function(ev) {
   if (ev.target.tagName === 'LI') {
-    ev.target.classList.toggle('checked');
+    ev.target.classList.toggle('completed');
     update(ev.target);
   }
 }, false);

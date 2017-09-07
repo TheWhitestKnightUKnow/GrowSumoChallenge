@@ -96,6 +96,16 @@ server.on('connection', (client) => {
         DB = newDB;
     });
     
+    // Set all todo's to complete
+    client.on('completeAll', () => {
+        const newDB = DB.map( (item) => {
+            item.completed = true;
+            return item;
+        });
+        // Set the DB to the appropriate array
+        DB = newDB;
+    });
+    
     // Send the DB downstream on connect
     reloadTodos();
 });
