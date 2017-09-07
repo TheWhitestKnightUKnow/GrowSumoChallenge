@@ -18,7 +18,7 @@ you've built easy to use and easy on the eyes? :eyes:
 - [x] Commit often, with high quality comments
 - [x] Write readable, performant code
 - [x] Fix all the bugs
-- [ ] Add a feature that allows users to complete tasks
+- [x] Add a feature that allows users to complete tasks
 - [ ] Add a feature that allows users to delete tasks
 - [ ] Add a feature that allows the completion of all tasks
 - [ ] Add a feature that allows the deletion of all tasks

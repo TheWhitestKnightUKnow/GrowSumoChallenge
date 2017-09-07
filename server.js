@@ -50,8 +50,12 @@ server.on('connection', (client) => {
 
     // Sends a message to the client to reload all todos
     const reloadTodos = () => {
-        console.log(DB);
         server.emit('load', DB);
+    };
+    
+    // Sends a message to the client to add a single todo
+    const appendTodo = (todo) => {
+        server.emit('loadSingle', todo);
     };
 
     // Accepts when a client makes a new todo
@@ -61,11 +65,8 @@ server.on('connection', (client) => {
 
         // Push this newly created todo to our database
         DB.push(newTodo);
-        console.warn(DB);
-        // Send the latest todos to the client
-        // FIXME: This sends all todos every time, could this be more efficient?
-        // ** Sure, could send only the newly made todo(s)
-        reloadTodos();
+        // Send just the newly made todo to the client
+        appendTodo(newTodo);
     });
     
     // TODO: This is a mock-up of what I imagine the delete
@@ -86,7 +87,7 @@ server.on('connection', (client) => {
     });
     
     // TODO: Same goes for a complete
-    client.on("complete", (t) => {
+    client.on("update", (t) => {
         // Given the todo, set it's 'complete' value to true
         const newDB = DB.map( (item) => {
             if (item.id === t.id) {
@@ -94,12 +95,10 @@ server.on('connection', (client) => {
             }
             return item;
         });
-        
+        // Set the DB to the appropriate array
         DB = newDB;
-        
-//        console.log(DB);
     });
-
+    
     // Send the DB downstream on connect
     reloadTodos();
 });

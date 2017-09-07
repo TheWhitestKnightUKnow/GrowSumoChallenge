@@ -1,17 +1,6 @@
 const server = io('http://localhost:3003');
 const list = document.getElementById('todo-list');
 
-// Add a listener to the todo-list, so that when
-// a todo is clicked on, it becomes completed
-list.addEventListener('click', function(ev) {
-  if (ev.target.tagName === 'LI') {
-    ev.target.classList.toggle('checked');
-    list.removeChild(ev.target);
-    console.log(ev);
-    server.emit('delete', ev.target);
-  }
-}, false);
-
 // NOTE: These are all our globally scoped functions for interacting with the server
 // This function adds a new todo from the input
 function add() {
@@ -22,7 +11,6 @@ function add() {
         server.emit('make', {
             title : input.value
         });
-        console.warn(input.value);
         // Clear the input
         input.value = '';
         // Refocus on the input
@@ -37,15 +25,24 @@ function remove(todo) {
     server.emit('delete', todo); // todo.value?
 }
 
-// TODO: Create a complete function that denotes tasks as
-// completed
-function update(e) {
-    console.log(e);
-    server.emit('update', e);
+// Updates a todo to "completed"
+function update(todo) {
+    server.emit('update', {
+        id: todo.id,
+        title: todo.innerHTML
+    });
 }
 
+// Add a listener to the todo-list, so that when
+// a todo is clicked on, it becomes completed
+list.addEventListener('click', function(ev) {
+  if (ev.target.tagName === 'LI') {
+    ev.target.classList.toggle('checked');
+    update(ev.target);
+  }
+}, false);
+
 function render(todo) {
-    //console.log(todo);
     // Create the parent list item
     const listItem = document.createElement('li');
     listItem.id = todo.id;
@@ -72,4 +69,9 @@ server.on('load', (todos) => {
     // more efficient.
     list.innerHTML = "";
     todos.forEach((todo) => render(todo));
+});
+
+// Listening for a single event being added
+server.on('loadSingle', (todo) => {
+    render(todo);
 });
