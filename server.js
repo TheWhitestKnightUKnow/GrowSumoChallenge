@@ -106,6 +106,12 @@ server.on('connection', (client) => {
         DB = newDB;
     });
     
+    // Delete all todo's
+    client.on('deleteAll', () => {
+        DB = [];
+        reloadTodos();
+    });
+    
     // Send the DB downstream on connect
     reloadTodos();
 });

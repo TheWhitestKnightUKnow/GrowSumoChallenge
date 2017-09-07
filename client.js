@@ -36,6 +36,7 @@ function update(todo) {
     });
 }
 
+// Completes all todo's
 function completeAll() {
     var lis = list.getElementsByTagName("li");
     for (var i = 0; i < lis.length; ++i) {
@@ -47,6 +48,11 @@ function completeAll() {
         }
     }
     server.emit('completeAll');
+}
+
+// Delete's all current todo's
+function deleteAll() {
+    server.emit('deleteAll');
 }
 
 // Add a listener to the todo-list, so that when
@@ -88,9 +94,6 @@ function onEnter(e) {
 // NOTE: These are listeners for events from the server
 // This event is for (re)loading the entire list of todos from the server
 server.on('load', (todos) => {
-    // For now, this will reset the todos to be equal to
-    // DB when we reload.  TODO: Could still make reload 
-    // more efficient.
     list.innerHTML = "";
     todos.forEach((todo) => render(todo));
 });
