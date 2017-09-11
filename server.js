@@ -24,16 +24,15 @@ const firstTodos = require('./data');
 // Todo class
 const Todo = require('./todo');
 
+// Found this cool idea online to use a flag
+// to tell if the server has been reset or not
+let serverStarted = false;
+// First, we start the DB off empty
+let DB = [];
+
 server.on('connection', (client) => {
     // This is going to be our fake 'database' for this application
     // Parse all default Todo's from db
-
-    // Found this cool idea online to use a flag
-    // to tell if the server has been reset or not
-    let serverStarted = false;
-    
-    // First, we start the DB off empty
-    let DB = [];
     
     // Then, if the server was restarted, we populate the
     // DB with firstTodos array
@@ -81,6 +80,8 @@ server.on('connection', (client) => {
         });
         
         DB = newDB;
+        //Update the other clients
+        server.emit('load', DB);
     });
     
     // TODO: Same goes for a complete

@@ -21,8 +21,8 @@ you've built easy to use and easy on the eyes? :eyes:
 - [x] Add a feature that allows users to complete tasks
 - [x] Add a feature that allows users to delete tasks
 - [x] Add a feature that allows the completion of all tasks
-- [ ] Add a feature that allows the deletion of all tasks
-- [ ] Add caching to the client app so that when we lose our connection we can still see our TODO's
+- [x] Add a feature that allows the deletion of all tasks
+- [x] Add caching to the client app so that when we lose our connection we can still see our TODO's
 - [ ] Give it some UX/UI :heart:, our approach is make it easy to use- _then_ make it beautiful
 
 ## Set Up

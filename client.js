@@ -1,5 +1,11 @@
 const server = io('http://localhost:3003');
 const list = document.getElementById('todo-list');
+var cache = [];
+
+// We start off connected to the server, but
+// if our connection breaks we can use this flag
+// to tell our client/UI that we're stranded
+var connection_error = false;
 
 // NOTE: These are all our globally scoped functions for interacting with the server
 // This function adds a new todo from the input
@@ -95,10 +101,24 @@ function onEnter(e) {
 // This event is for (re)loading the entire list of todos from the server
 server.on('load', (todos) => {
     list.innerHTML = "";
+    localStorage.setItem('cache', JSON.stringify(todos));
     todos.forEach((todo) => render(todo));
 });
 
 // Listening for a single event being added
 server.on('loadSingle', (todo) => {
     render(todo);
+});
+
+// When the server connections is broken,
+// load the todos from the cache
+server.on('connect_error', () => {
+    // At this point, we haven't had a connection error before
+    if (!connection_error) {
+        var todos = JSON.parse(localStorage.cache);
+        list.innerHTML = "";
+        todos.forEach((todo) => render(todo));
+    }
+    // But now we have!
+    connection_error = true;
 });
