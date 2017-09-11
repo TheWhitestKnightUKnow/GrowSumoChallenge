@@ -7,6 +7,15 @@ var cache = [];
 // to tell our client/UI that we're stranded
 var connection_error = false;
 
+// Add a listener to the todo-list, so that when
+// a todo is clicked on, it becomes completed
+list.addEventListener('click', function(ev) {
+  if (ev.target.tagName === 'LI') {
+    ev.target.classList.toggle('completed');
+    update(ev.target);
+  }
+}, false);
+
 // NOTE: These are all our globally scoped functions for interacting with the server
 // This function adds a new todo from the input
 function add() {
@@ -27,7 +36,6 @@ function add() {
 // A delete function to remove todos from
 // the 'database'
 function remove(todo) {
-    list.removeChild(todo);
     server.emit('delete', {
         id: todo.id,
         title: todo.innerHTML
@@ -38,21 +46,13 @@ function remove(todo) {
 function update(todo) {
     server.emit('update', {
         id: todo.id,
-        title: todo.innerText
+        title: todo.innerText,
+        completed: (todo.className.indexOf('completed') < 0 ? false : true)
     });
 }
 
 // Completes all todo's
 function completeAll() {
-    var lis = list.getElementsByTagName("li");
-    for (var i = 0; i < lis.length; ++i) {
-        // This is a super ugly version of
-        // if (!lis[i].hasClass('completed')) {
-        // because we lack jQuery
-        if ((" " + lis[i].className + " ").replace(/[\n\t\r]/g, " ").indexOf('completed') < 0) {
-            lis[i].classList.toggle('completed');
-        }
-    }
     server.emit('completeAll');
 }
 
@@ -61,22 +61,17 @@ function deleteAll() {
     server.emit('deleteAll');
 }
 
-// Add a listener to the todo-list, so that when
-// a todo is clicked on, it becomes completed
-list.addEventListener('click', function(ev) {
-  if (ev.target.tagName === 'LI') {
-    ev.target.classList.toggle('completed');
-    update(ev.target);
-  }
-}, false);
-
 function render(todo) {
     // Create the parent list item
     const listItem = document.createElement('li');
     listItem.id = todo.id;
+    // If the todo is completed, label it as such
+    if (todo.completed) {
+        listItem.className = "completed";
+    }
     // Create an X for deleting todos
     var span = document.createElement("SPAN");
-    var txt = document.createTextNode("   x");
+    var txt = document.createTextNode("x");
     span.className = "close";
     span.appendChild(txt);
     span.onclick = function() { remove(listItem); };

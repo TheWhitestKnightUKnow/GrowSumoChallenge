@@ -68,33 +68,31 @@ server.on('connection', (client) => {
         appendTodo(newTodo);
     });
     
-    // TODO: This is a mock-up of what I imagine the delete
-    // function will be like
+    // When a client deletes a todo
     client.on('delete', (t) => {
         // Given the todo, delete it from the list
-        // FIXME: This will delete any Todo with the same
-        // title contents.  This should only delete the selected
-        // Todo.
         const newDB = DB.filter((item) => {
             return item.id !== t.id;
         });
         
         DB = newDB;
         //Update the other clients
-        server.emit('load', DB);
+        reloadTodos();
     });
     
-    // TODO: Same goes for a complete
+    // When a client updates a todo
     client.on("update", (t) => {
         // Given the todo, set it's 'complete' value to true
         const newDB = DB.map( (item) => {
             if (item.id === t.id) {
-                item.completed = true;
+                item.completed = t.completed;
             }
             return item;
         });
         // Set the DB to the appropriate array
         DB = newDB;
+        //Update the other clients
+        reloadTodos();
     });
     
     // Set all todo's to complete
@@ -105,6 +103,8 @@ server.on('connection', (client) => {
         });
         // Set the DB to the appropriate array
         DB = newDB;
+        //Update the other clients
+        reloadTodos();
     });
     
     // Delete all todo's
