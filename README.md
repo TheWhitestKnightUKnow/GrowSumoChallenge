@@ -23,7 +23,7 @@ you've built easy to use and easy on the eyes? :eyes:
 - [x] Add a feature that allows the completion of all tasks
 - [x] Add a feature that allows the deletion of all tasks
 - [x] Add caching to the client app so that when we lose our connection we can still see our TODO's
-- [ ] Give it some UX/UI :heart:, our approach is make it easy to use- _then_ make it beautiful
+- [x] Give it some UX/UI :heart:, our approach is make it easy to use- _then_ make it beautiful
 
 ## Set Up
 This is a Node app so you'll need Node and NPM to get it up on its feet.
