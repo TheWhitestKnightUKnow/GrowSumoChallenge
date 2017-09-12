@@ -4,14 +4,18 @@
         <meta charset="utf-8">
         <title>TODO</title>
         <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700">
         <link rel="stylesheet" href="style/style.css">
     </head>
     <body>
-        <input id="todo-input" type="text" placeholder="Feed the cat" onkeypress="onEnter(event)" autofocus>
-        <button type="button" onclick="add()">Make</button>
-        <ul id="todo-list"></ul>
-        <button onclick="completeAll()">Check 'Em All!</button>
-        <button onclick="deleteAll()">Wipe My Todo List</button>
+        <div class="container">
+            <h2>To Do List</h2>
+            <hr>
+            <input id="todo-input" type="text" placeholder="Feed the cat..." onkeypress="onEnter(event)" autofocus> <button id="add" type="button" onclick="add()">Add to To Do List</button>
+            <ul id="todo-list"></ul>
+            <button onclick="completeAll()">Check 'Em All!</button>
+            <button onclick="deleteAll()">Wipe My Todo List</button>
+        </div>
     </body>
     <script src="client.js" async></script>
 </html>
