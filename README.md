@@ -35,5 +35,5 @@ npm start
 
 Now open `index.html` in your browser. Things won't work at first, but once the server is running, you should see your TODO's under the input.
 
-## Done?
+### Done?
 Great job! When you're all finished, send me an email with a link to the repo and I will check it out! 🙌
